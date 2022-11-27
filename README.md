@@ -20,7 +20,7 @@ As part of the commercial analytics team of Nike, we notice that it is a challen
 - [2.1 Data Cleaning](#21-data-cleaning)
 - [2.2 EDA](#22-eda)
     - [2.2.1 Overview Dataset Analysis](#221-overview-dataset-analysis)
-    - [2.2.2 Words Analysis](#222-words-analysis)
+    - [2.2.2 Words Analysis](#222-word-analysis)
         - 2.2.2.1 20 Most Common Words
         - 2.2.2.2 20 Most Common Bigram
         - 2.2.2.3 20 Most Common Trigram
@@ -98,11 +98,11 @@ Average word count
 - Adidas: 55.40 words
 
 Top 3 active users
-Nike
+**Nike**
 - Extroe (394 posts)
 - Nervous-Matter4576 (198 posts)
 - Syranial-Bean (198 posts)
-Adidas
+**Adidas**
 - Neonnearvash (167 posts)
 - Alternative_Coconut6 (111 posts)
 - MClooosey (110 posts)
@@ -122,6 +122,7 @@ Adidas
 |does|worn|order|
 |time| | |
 |don| | |
+
 There are 11 common word from both Nike and Adidas, which is expected as both brands' businesses are driven by Footwear. Some words that stand out from Nike only are 'air', 'leather', 'work' and 'reflective', while for Adidas only are 'black', 'confirmed' and 'app'. We will move on to Bigram to further analyse more commonly used words in each subreddit.
 
 ##### 2.2.2.2 20 Most Common Bigram
