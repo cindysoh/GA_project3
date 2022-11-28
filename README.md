@@ -53,8 +53,8 @@ As part of the commercial analytics team of Nike, we notice that it is a challen
 For data collection, we have use Reddit, as it has proper segmentation of different communities in subreddits which help ease our web scraping process.
 
 Data standardisation:
-Minimum 20 words in a post (title + selftext)
-5000 posts from each brand’s subreddit
+- Minimum 20 words in a post (title + selftext)
+- 5000 posts from each brand’s subreddit
 
 Competitor selection: Adidas
 
