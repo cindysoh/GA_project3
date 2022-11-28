@@ -90,10 +90,12 @@ Average word count
 - Adidas: 55.40 words
 
 Top 3 active users
+
 **Nike**
 - Extroe (394 posts)
 - Nervous-Matter4576 (198 posts)
 - Syranial-Bean (198 posts)
+
 **Adidas**
 - Neonnearvash (167 posts)
 - Alternative_Coconut6 (111 posts)
