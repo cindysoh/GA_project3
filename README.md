@@ -24,34 +24,26 @@ As part of the commercial analytics team of Nike, we notice that it is a challen
         - 2.2.2.1 20 Most Common Words
         - 2.2.2.2 20 Most Common Bigram
         - 2.2.2.3 20 Most Common Trigram
+        - 2.2.2.4 20 Most Common Words using TF-IDF
     - [2.2.3 Sentiment Analysis](#223-sentiment-analysis)
-- [3.1 Preprocessing](#31-preprocessing)
+- 2.3 Saving Data
+- 3.1 Preprocessing
     - 3.1.1 Tokenize
     - 3.1.2 Lemmatize
     - 3.1.3 Stem
-- [Preprocessing and Modeling](#Preprocessing-and-Modeling)
-- [Conclusion and Recommendations](#Conclusion-and-Recommendations)
+- [3.2 Baseline Model](#32-baseline-model)
+    - 3.2.1 Count Vectorizer
+    - [3.2.2 Naive Bayes](#322-naive-bayes)
+        - 3.2.2.1 Tokenized words
+        - 3.2.2.2 Lemmatized words
+        - 3.2.2.3 Stemmed words
+    - 3.2.3 Stopwords
+    - [3.2.4 Naive Bayes with Stopwords](#324-naive-bayes-with-stopwords)
+- [3.3 Model Tuning](#33-model-tuning)
+    - [3.3.1 Naive Bayes with TF-IDF](#331-naive-bayes-with-tf-idf)
+    - [3.3.2 Random Forest](#332-random-forest)
+- [3.4 Conclusion and Recommendation](#34-conclusion-and-recommendation)
 
-
-### 3.1 Preprocessing
-#### 3.1.1 Tokenize
-#### 3.1.2 Lemmatize
-####  3.1.3 Stem
-
-### 3.2 Baseline Model
-#### 3.2.1 Count Vectorizer
-#### 3.2.2 Naive Bayes
-- 3.2.2.1 Tokenized words
-- 3.2.2.2 Lemmatized words
-- 3.2.2.3 Stemmed words
-#### 3.2.3 Stopwords
-#### 3.2.4 Naive Bayes with Stopwords
-
-### 3.3 Model Tuning
-#### 3.3.1 Naive Bayes with TF-IDF
-#### 3.3.2 Random Forest
-
-### 3.4 Conclusion and Recommendation
 
 
 ## Executive Summary
@@ -150,6 +142,7 @@ There are 11 common word from both Nike and Adidas, which is expected as both br
 |airmax 95|198|   |ve received|114|
 
 We can identify a few words that are related to each brand.
+
 **Nike**
 - Style Names/Colourway: 'air max'/'airmax 95', 'air force', 'jordan 1s', 'photon dust'
 - Product/Features: 'basketball shoes', 'lace loops', 'flex experience', 'reflective lace'
@@ -185,6 +178,7 @@ We can identify a few words that are related to each brand.
 |mens drop friday|99|   |ties kanye west|113|
 
 Now we can see the combined word make more sense and more distinctive.
+
 **Nike**
 - Style Names/Colourway: 'photon dust reflective', 'air max 95', 'air max plus', 'colour photon dust', 'bought jordan 1s', 'air force 1s', 'mens dunks time'
 - Product/Features: 'reflective lace loops', 'lace loops 95s'
@@ -197,5 +191,67 @@ Now we can see the combined word make more sense and more distinctive.
 #### 2.2.3 Sentiment Analysis
 Sentiment analysis is a way to classify text as either having positive or negative sentiment. This will help us to analyse each post according to positive, neutral or negative comments. Overall scoring on 'compound' shows that Adidas is have more positive posts than Nike. 
 
+|Sentiment|Nike|Adidas|
+|----|----|----|
+|Positive|62.18%|64.76%|
+|Neutral|8.02%|12.4%|
+|Negative|29.8%|22.84%|
+
 - Adidas positive posts: reference to previous slide, the community could be expressing positive comments about adidas app or web service. Durability of their ultraboost
 - Nike positive posts: most likely talk about likability of the product and design, as we notice alot of product names being mentioned.
+
+
+### 3.2 Baseline Model
+#### 3.2.2 Naive Bayes
+|Model|Vectorizer|Words|Train Score|Test Score|False Positive|False Negative|
+|----|----|----|----|----|----|----|
+|Naive Bayes|Count|Tokenize|0.9972|0.9970|5|5|
+|Naive Bayes|Count|Lemmatized|0.9984|0.9970|6|4|
+|Naive Bayes|Count|Stemmed|0.9978|0.9973|4|5|
+
+Our baseline model using Naive Bayes result in 99% of accurate prediction. The high score should result in each brand names are commonly found in their respective reddit, thus our model are not being properly train to identify other important words. Therefore, we will add brand names to the stopword. Stemmed word seems to have the least False Positive and False Negative. So we will use Stemmed for our baseline model.
+
+#### 3.2.4 Naive Bayes with Stopwords
+|Model|Vectorizer|Words|Train Score|Test Score|False Positive|False Negative|
+|----|----|----|----|----|----|----|
+|Naive Bayes|Count|Stemmed|0.9978|0.9973|4|5|
+|Naive Bayes|Count|Stemmed - Stopwords|0.9973|0.9967|4|7|
+
+Seems like after adding 'nike' and 'adidas' as stop word it did not affect the performance of the model. Thus we can strongly believe that both reddit does not have alot of words that coincide. There is also slight overfitting, but we will try to adjust that in our model tuning portion.
+
+
+### 3.3 Model Tuning
+#### 3.3.1 Naive Bayes with TF-IDF
+|Model|Vectorizer|Train Score|Test Score|Precision|False Positive|False Negative|
+|----|----|----|----|----|----|----|
+|Naive Bayes|Count|0.9973|0.9967|0.9976|4|7|
+|Naive Bayes|TF-IDF|0.9969|0.9970|0.9982|3|7|
+
+We can see that there is a slight improvement in Specificity (higher number of TN predicted). Our goal is to minimise false positive (Precision). Notice that the overfitting issue is solved after changing from Count Vectorizer to TF-IDF Vectorizer. 
+
+#### 3.3.2 Random Forest
+|Model|Vectorizer|Train Score|Test Score|Precision|False Positive|False Negative|
+|----|----|----|----|----|----|----|
+|Naive Bayes|Count|0.9973|0.9967|0.9976|4|7|
+|Naive Bayes|TF-IDF|0.9969|0.9970|0.9982|3|7|
+|Random Forest|TF-IDF|1.0|0.9964|0.9964|6|6|
+
+We can see that it is overfitted but able to predict 1 more TP using this model. Naive Bayes with TF-IDF vectorizer 
+seems to be a more balance model and it's not overfitted. It also has the lowest number of False Positive, which is our deciding factor.
+
+
+### 3.4 Conclusion and Recommendation
+**Conclusion**
+We notice that there isn't a huge difference change from the baseline model, as it has a high test score to begin with. Despite the high baseline score, we did manage fix overfitting issue and notice slight improvement in accuracy using Naive Bayes with TF-IDF vectorizer. Testing with Random Forest Classifier did not improve test score nor accuracy.
+
+Throughout this project we are able to address some of the issues mention in the problem statement:
+- understand current consumer response/comments: number of posts made in the span of 12 days and who are the top authors
+- find out if the merchandise they had planned that would have high demand are accurate based on consumers comments: notice some product names and colour in most common words analysis
+- understand current competitor trend: Similarly, we notice there are product name mention in adidas common word, which can help with future season merchandise planning
+- dynamic/scalable solution: able to select collect data when needed, thou date selection might be a bit tricky and will need more fine tuning in the future 
+- differentiate Nike posts from competitor posts using a classification model: Precision score for Naive Bayes model with TF-IDF is 0.9981773997569866. This shows that our model can accurately classify Nike from Adidas.
+
+**Recommendation**
+- Sentiment Analysis : Should focus on improving sentiment before launching brand campaigns on r/Nike
+- Utilise popular bigram/trigrams : Can be used to determine which product lines are in-demand for campaigns
+- Improve generalizability of classifier: Train classifier on other online forums for more generalizable results across online demographics
